@@ -5,7 +5,7 @@ module.exports = function (context, req) {
   if (req.body) {
     context.res = {
         // status: 200, /* Defaults to 200 */
-        body: eval(req.body);
+        body: eval(req.body)
     };
   }
   else {
