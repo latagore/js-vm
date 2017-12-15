@@ -1,0 +1,23 @@
+{
+  "name": "js-vm",
+  "version": "1.0.0",
+  "description": "This is a project that is intended to execute arbitrary JS scripts on Azure Cloud Services as an HTTP service. The result of the script is outputted in the HTTP body.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/latagore/js-vm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/latagore/js-vm/issues"
+  },
+  "homepage": "https://github.com/latagore/js-vm#readme",
+  "dependencies": {
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2"
+  }
+}
