@@ -1,6 +1,9 @@
-// cloud function
+// cloud function to get natural language intent from text
+if (!process.env.API_AI_KEY) {
+  throw new Error ("API_AI_KEY environment variable not defined")
+}
+
 const rp = require('request-promise');
-rp.debug = true
 module.exports = function (context, req) {
   if (req.body) {
     try {
@@ -23,12 +26,12 @@ module.exports = function (context, req) {
       })
       .then((response) => JSON.parse(response))
       .then((data) => {
-        console.log(data);
         if (
           data.result
           && data.result
           && data.result.action
         ) {
+          console.log(data.result.action)
           context.res = {
             status: 200,
             body: data.result.action
@@ -52,7 +55,7 @@ module.exports = function (context, req) {
     } catch (e) {
       context.res = {
         status: 400,
-        body: "Please provide a JSON body with lang, query and sessionId"
+        body: "Body is invalid JSON. Please provide a JSON body with lang, query and sessionId"
       };
       context.done();
     }
