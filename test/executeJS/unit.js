@@ -1,6 +1,7 @@
 const executeJS = require('../../executeJS');
 const expect = require('chai').expect;
 const sinon = require('sinon');
+const nock = require('nock');
 
 describe('executeJS cloud function', () => {
   it('evaluates strings', () => {
@@ -37,20 +38,50 @@ describe('executeJS cloud function', () => {
   })
 
   it('evaluates promises and returns resolution with async flag', () => {
-    const context = {
-      log: () => {},
-      done: () => {
-        // test when done
-        expect(context.res.body).to.equal(result);
-      }
-    };
-    const str = 'Promise.resolve("hello")';
-    const result = "hello";
-    executeJS(context, {
-      body: str,
-      query: {
-        async: "true"
-      }
-    })
+    return new Promise((resolve) => {
+      const context = {
+        log: () => {},
+        done: () => {
+          // test when done
+          expect(context.res.body).to.equal(result);
+          resolve();
+        }
+      };
+      const str = 'Promise.resolve("hello")';
+      const result = "hello";
+      executeJS(context, {
+        body: str,
+        query: {
+          async: "true"
+        }
+      })
+    });
   });
+
+  it('allows use of request-promise library', () => {
+    // wait for callback to be executed
+    return new Promise((resolve) => {
+      const html = "<html></html>";
+      nock('https://www.yahoo.com')
+      .get('/')
+      .reply(200, html);
+
+      const context = {
+        log: () => {},
+        done: () => {
+          // test when done
+          expect(context.res.body).to.equal(html);
+          resolve();
+        }
+      };
+      const str = 'rp("https://www.yahoo.com/")'
+      executeJS(context, {
+        body: str,
+        query: {
+          async: "true"
+        }
+      })
+    });
+    })
+
 })
