@@ -1,18 +1,29 @@
+const rp = require('request-promise');
 
 module.exports = function (context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
 
   if (req.body) {
-    context.res = {
-        // status: 200, /* Defaults to 200 */
+    if (req.query.async) {
+      eval(req.body)
+      .then(function (result) {
+        context.res = {
+          body: result
+        };
+        context.done();
+      })
+    } else {
+      context.res = {
         body: eval(req.body)
-    };
+      };
+      context.done();
+    }
   }
   else {
     context.res = {
       status: 400,
       body: "Please pass a script in the request body"
     };
+    context.done();
   }
-  context.done();
 };
