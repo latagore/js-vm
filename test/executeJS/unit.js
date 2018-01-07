@@ -37,6 +37,25 @@ describe('executeJS cloud function', () => {
     expect(doneSpy.calledOnce).to.be.true;
   })
 
+
+  it('returns the error message if the script throws an exception', () => {
+    const doneSpy = sinon.spy();
+    const context = {
+      log: () => {},
+      done: doneSpy
+    };
+    const str = 'throw "error"';
+    const result = "Error: error";
+    executeJS(context, {
+      query: {},
+      body: str
+    })
+
+    expect(context.res.status).to.equal(400);
+    expect(context.res.body).to.equal(result);
+    expect(doneSpy.notCalled).to.be.true;
+  })
+
   it('evaluates promises and returns resolution with async flag', () => {
     return new Promise((resolve) => {
       const context = {
@@ -82,6 +101,5 @@ describe('executeJS cloud function', () => {
         }
       })
     });
-    })
-
+  })
 })

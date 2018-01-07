@@ -2,21 +2,27 @@ const rp = require('request-promise');
 
 module.exports = function (context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
-
   if (req.body) {
-    if (req.query.async) {
-      eval(req.body)
-      .then(function (result) {
+    try {
+      if (req.query.async) {
+        eval(req.body)
+        .then(function (result) {
+          context.res = {
+            body: result
+          };
+          context.done();
+        })
+      } else {
         context.res = {
-          body: result
+          body: eval(req.body)
         };
         context.done();
-      })
-    } else {
+      }
+    } catch (e) {
       context.res = {
-        body: eval(req.body)
-      };
-      context.done();
+        status: 400,
+        body: `Error: ${e}`
+      }
     }
   }
   else {
