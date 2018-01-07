@@ -31,10 +31,12 @@ module.exports = function (context, req) {
           && data.result
           && data.result.action
         ) {
-          context.log(data.result.action)
           context.res = {
             status: 200,
-            body: data.result.action
+            body: data.result.action,
+            headers: {
+              "content-type": "text/plain"
+            }
           };
         } else {
           context.log("api.ai didn't provide action for following request: " + req.body);
@@ -53,7 +55,7 @@ module.exports = function (context, req) {
         context.done();
       })
     } catch (e) {
-      context.info("request crashed with error:", e);
+      context.log("request crashed with error:", e);
       context.res = {
         status: 400,
         body: "Body is invalid JSON. Please provide a JSON body with lang, query and sessionId"
