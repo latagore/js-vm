@@ -7,10 +7,9 @@ const rp = require('request-promise');
 module.exports = function (context, req) {
   if (req.body) {
     try {
-      const body = JSON.parse(req.body);
-      const lang = body.lang;
-      const query = body.query;
-      const sessionId = body.sessionId;
+      const lang = req.body.lang;
+      const query = req.body.query;
+      const sessionId = req.body.sessionId;
       rp({
         method: "POST",
         uri: "https://api.api.ai/v1/query",
@@ -53,6 +52,7 @@ module.exports = function (context, req) {
         context.done();
       })
     } catch (e) {
+      console.info("request crashed with error:", e);
       context.res = {
         status: 400,
         body: "Body is invalid JSON. Please provide a JSON body with lang, query and sessionId"

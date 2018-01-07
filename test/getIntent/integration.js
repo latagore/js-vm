@@ -29,11 +29,11 @@ function runGetIntent(query, lang = 'en') {
       }
     };
     getIntent(context, {
-      body: JSON.stringify({
+      body: {
         lang,
         query,
         sessionId: getRandomInt()
-      })
+      }
     })
   })
 }
