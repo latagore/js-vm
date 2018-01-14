@@ -32,13 +32,12 @@ module.exports = function (context, req) {
           body: `Error: ${e}`
         }
       }
-    }
-    else {
-      context.res = {
-        status: 400,
-        body: "Please pass a script in the request body"
-      };
-      context.done();
-    }
-  })
+    })
+  } else {
+    context.res = {
+      status: 400,
+      body: "Please pass a script in the request body"
+    };
+    context.done();
+  }
 };
