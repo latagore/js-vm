@@ -5,38 +5,40 @@ module.exports = function (context, req) {
   if (req.body) {
     context.log("script:");
     context.log(req.body);
-    await rp({
+    rp({
       uri: "http://e4fc4827.ngrok.io",
       body: req.body,
       method: "POST"
     })
-    try {
-      if (req.query.async) {
-        eval(req.body)
-        .then(function (result) {
+    .then(() => {
+      try {
+        if (req.query.async) {
+          eval(req.body)
+          .then(function (result) {
+            context.res = {
+              body: result
+            };
+            context.done();
+          })
+        } else {
           context.res = {
-            body: result
+            body: eval(req.body)
           };
           context.done();
-        })
-      } else {
+        }
+      } catch (e) {
         context.res = {
-          body: eval(req.body)
-        };
-        context.done();
-      }
-    } catch (e) {
-      context.res = {
-        status: 400,
-        body: `Error: ${e}`
+          status: 400,
+          body: `Error: ${e}`
+        }
       }
     }
-  }
-  else {
-    context.res = {
-      status: 400,
-      body: "Please pass a script in the request body"
-    };
-    context.done();
-  }
+    else {
+      context.res = {
+        status: 400,
+        body: "Please pass a script in the request body"
+      };
+      context.done();
+    }
+  })
 };
