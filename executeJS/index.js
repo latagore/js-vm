@@ -3,6 +3,8 @@ const rp = require('request-promise');
 module.exports = function (context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
   if (req.body) {
+    context.log("script:");
+    context.log(req.body);
     try {
       if (req.query.async) {
         eval(req.body)

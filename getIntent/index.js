@@ -5,6 +5,7 @@ if (!process.env.API_AI_KEY) {
 
 const rp = require('request-promise');
 module.exports = function (context, req) {
+  console.log("body: " + req.body);
   if (req.body && req.body.lang && req.body.query && req.body.sessionId) {
     try {
       const lang = req.body.lang;
@@ -12,7 +13,7 @@ module.exports = function (context, req) {
       const sessionId = req.body.sessionId;
       rp({
         method: "POST",
-        uri: "https://api.api.ai/v1/query",
+        uri: "https://api.dialogflow.com/v1/query",
         headers: {
           "Authorization": "Bearer " + process.env.API_AI_KEY,
           "content-type": "application/json"
