@@ -5,7 +5,7 @@ if (!process.env.API_AI_KEY) {
 
 const rp = require('request-promise');
 module.exports = function (context, req) {
-  console.log("body: " + req.body);
+  context.log("body: " + req.body);
   if (req.body && req.body.lang && req.body.query && req.body.sessionId) {
     try {
       const lang = req.body.lang;
