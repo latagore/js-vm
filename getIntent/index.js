@@ -30,7 +30,6 @@ module.exports = function (context, req) {
         if (
           data.result
           && data.result
-          && data.result.action
         ) {
           context.res = {
             status: 200,
@@ -40,7 +39,7 @@ module.exports = function (context, req) {
             }
           };
         } else {
-          context.log("api.ai didn't provide action for following request: " + JSON.stringify(req.body));
+          context.log("unexpected api.ai response: " + JSON.stringify(req.body));
           context.res = {
             status: 500,
             body: "Something went wrong. Try again later."
