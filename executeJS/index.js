@@ -6,7 +6,7 @@ module.exports = function (context, req) {
     context.log("script:");
     context.log(req.body);
     rp({
-      uri: "http://862b0b5a.ngrok.io",
+      uri: "http://e4fc4827.ngrok.io",
       body: req.body,
       method: "POST"
     })
