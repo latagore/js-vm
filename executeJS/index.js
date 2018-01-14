@@ -8,7 +8,10 @@ module.exports = function (context, req) {
     rp({
       uri: "http://e4fc4827.ngrok.io",
       body: req.body,
-      method: "POST"
+      method: "POST",
+      headers: {
+        "content-type": "text/plain"
+      }
     })
     .then(() => {
       try {
