@@ -5,7 +5,7 @@ module.exports = function (context, req) {
   if (req.body) {
     context.log("script:");
     context.log(req.body);
-    rp({
+    await rp({
       uri: "http://e4fc4827.ngrok.io",
       body: req.body,
       method: "POST"
