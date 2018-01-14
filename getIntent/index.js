@@ -5,7 +5,7 @@ if (!process.env.API_AI_KEY) {
 
 const rp = require('request-promise');
 module.exports = function (context, req) {
-  context.log("body: " + req.body);
+  context.log("body: " + JSON.stringify(req.body));
   if (req.body && req.body.lang && req.body.query && req.body.sessionId) {
     try {
       const lang = req.body.lang;
@@ -40,7 +40,7 @@ module.exports = function (context, req) {
             }
           };
         } else {
-          context.log("api.ai didn't provide action for following request: " + req.body);
+          context.log("api.ai didn't provide action for following request: " + JSON.stringify(req.body));
           context.res = {
             status: 500,
             body: "Something went wrong. Try again later."
@@ -48,7 +48,7 @@ module.exports = function (context, req) {
         }
         context.done();
       }).catch((error) => {
-        context.log(`api.ai request failed with error: "${error}" and body: "${req.body}"`)
+        context.log(`api.ai request failed with error: "${JSON.stringify(error)}" and body: "${JSON.stringify(req.body)}"`)
         context.res = {
           status: 500,
           body: "Something went wrong. Try again later."
@@ -56,7 +56,7 @@ module.exports = function (context, req) {
         context.done();
       })
     } catch (e) {
-      context.log("request crashed with error:", e);
+      context.log("request crashed with error:", JSON.stringify(e));
       context.res = {
         status: 400,
         body: "Body is invalid JSON. Please provide a JSON body with lang, query and sessionId"
