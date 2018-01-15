@@ -11,17 +11,17 @@ const THRESHOLD = 0.4;
 module.exports = function (context, req) {
   context.log("body: " + JSON.stringify(req.body));
   if (req.body && typeof req.body === 'string') {
-    const tokens = req.body.trim().replace(/[^-A-Za-z\s]/g, "").split(/\s+/);
-    console.log(tokens);
+    const tokens = req.body.trim()
+      .replace(/\b[^-A-Za-z\s]\b/g, "")
+      .replace(/[^-A-Za-z0-9.\s]/g, "")
+      .split(/\s+/);
     englishDictPromise.then((dict) => {
       const englishWordCount = tokens.reduce((count, word) => {
-        console.log(word + ": " + dict[word])
         if (dict[word]) {
           return count + 1;
         }
         return count;
       }, 0)
-      console.log(englishWordCount / tokens.length);
       if (englishWordCount / tokens.length < THRESHOLD) {
         context.res = {
           body: true
